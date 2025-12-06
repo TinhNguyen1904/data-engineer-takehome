@@ -1,0 +1,14 @@
+crypto_analytics:
+  target: dev
+  outputs:
+
+    dev:
+      type: bigquery
+      method: service-account
+      project: YOUR_GCP_PROJECT_ID
+      dataset: analytics_dev          
+      threads: 4
+      timeout_seconds: 300
+      location: asia-southeast1
+      priority: interactive
+      keyfile: /path/to/your/key.json

@@ -1,0 +1,46 @@
+name: crypto_analytics
+version: 1.0.0
+config-version: 2
+
+profile: crypto_analytics
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+analysis-paths: ["analysis"]
+docs-paths: ["docs"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  crypto_analytics:
+
+    # LAYER 1: BRONZE (staging)
+    staging:
+      +schema: bronze
+      +materialized: view
+      +tags: ["bronze"]
+
+    # LAYER 2: SILVER
+    silver:
+      +schema: silver
+      +materialized: table
+      +tags: ["silver"]
+
+    # LAYER 3: GOLD / MARTS
+    marts:
+      +schema: gold
+      +materialized: table
+      +tags: ["gold"]
+
+
+    marts/daily:
+      +materialized: incremental
+      +incremental_strategy: merge
+      +unique_key: date
+
+    marts/obt:
+      +materialized: table

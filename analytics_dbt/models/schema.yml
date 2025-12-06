@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: raw
+    tables:
+      - name: transactions
+      - name: users
+      - name: rates
+
+models:
+  - name: stg_transactions
+    tests:
+      - unique:
+          column_name: txn_id
+      - not_null:
+          column_name: txn_id
+
+  - name: stg_users
+    tests:
+      - unique:
+          column_name: user_id
+      - not_null:
+          column_name: user_id
+
+  - name: int_transactions_enriched
+    tests:
+      - not_null:
+          column_name: txn_id
+      - relationships:
+          to: ref('stg_users')
+          field: user_id
+
+  - name: mart_daily_volume
+    tests:
+      - not_null:
+          column_name: day
